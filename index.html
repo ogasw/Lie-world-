@@ -1,0 +1,43 @@
+!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frontend-Backend Interaction</title>
+</head>
+<body>
+  <h1>Frontend and Backend Example</h1>
+  <form id="greetingForm">
+    <label for="name">Enter your name:</label>
+    <input type="text" id="name" name="name" required>
+    <button type="submit">Submit</button>
+  </form>
+  <p id="response"></p>
+
+  <script>
+    const form = document.getElementById('greetingForm');
+    const responseParagraph = document.getElementById('response');
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const name = document.getElementById('name').value;
+
+      try {
+        const response = await fetch('http://localhost:5000/greet', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name })
+        });
+
+        const data = await response.json();
+        responseParagraph.textContent = data.message;
+      } catch (error) {
+        responseParagraph.textContent = 'Error: ' + error.message;
+      }
+    });
+  </script>
+</body>
+</html>
+
+  
